@@ -26,6 +26,10 @@ const getUser = async (req, res) => {
   try {
     const token = req.cookies.token || "";
 
+    if (!token) {
+      return res.status(404).json({ message: "Invalid token", status: 404 });
+    }
+
     const user = await jwt.verify(token, process.env.JWT_SECRET);
     if (!user?._id)
       return res.status(404).json({ message: "Invalid token", status: 404 });
